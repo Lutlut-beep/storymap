@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Larantuka Heritage Trail</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #2d3748;
+            background-color: #f7fafc;
+        }
+
+        /* Layout Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+
+        /* Sticky Map Area */
+        #map {
+            width: 100%;
+            height: 45vh;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        @media (min-width: 768px) {
+            #map {
+                width: 55%;
+                height: 100vh;
+                order: 2;
+            }
+        }
+
+        /* Story Scroll Area */
+        .story-container {
+            width: 100%;
+            padding: 2rem 1.5rem;
+            background-color: #f8fafc;
+        }
+
+        @media (min-width: 768px) {
+            .story-container {
+                width: 45%;
+                padding: 4rem 3rem;
+                order: 1;
+            }
+        }
+
+        /* Header / Cover Section */
+        .header-section {
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #1e3a8a;
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.25rem;
+            color: #0f172a;
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Story Cards */
+        .step {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 4rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            opacity: 0.4;
+            transform: translateY(20px);
+        }
+
+        .step.active {
+            opacity: 1;
+            transform: translateY(0);
+            border-left: 6px solid #1e3a8a;
+            box-shadow: 0 10px 25px -5px rgba(30, 58, 138, 0.12);
+        }
+
+        .step-number {
+            font-family: 'Cinzel', serif;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .step h2 {
+            font-size: 1.35rem;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .step p {
+            font-size: 0.95rem;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .step ul {
+            margin-left: 1.2rem;
+            color: #475569;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .step li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Peta Interaktif -->
+        <div id="map"></div>
+
+        <!-- Panel Narasi / Storytelling -->
+        <div class="story-container">
+            <div class="header-section">
+                <span class="badge">KKN-PPM UGM Romantika Larantuka</span>
+                <h1>Larantuka Heritage Trail</h1>
+                <p class="subtitle">Menjelajahi Jejak Sejarah dan Intimasi Religi di Jantung Kota Reinha, Kelurahan Larantuka.</p>
+            </div>
+
+            <!-- Point 1 -->
+            <div class="step active" id="step-0">
+                <div class="step-number">01 / LOKASI HISTORIS</div>
+                <h2>Taman Doa Bukit Fatima</h2>
+                <p>Taman Doa Bukit Fatima menyajikan panorama spiritual sekaligus pesona alam Larantuka dari ketinggian. Didedikasikan sebagai tempat permenungan dan doa, bukit ini menjadi salah satu penanda penting tradisi Katolik yang mengakar kuat di Flores Timur.</p>
+                <ul>
+                    <li><strong>Sejarah:</strong> Diresmikan sebagai sarana ziarah mengenang penampakan Bunda Maria di Fatima.</li>
+                    <li><strong>Arsitektur:</strong> Patung Bunda Maria berdiri di lereng bukit menghadap ke Selat Larantuka.</li>
+                </ul>
+            </div>
+
+            <!-- Point 2 -->
+            <div class="step" id="step-1">
+                <div class="step-number">02 / LOKASI HISTORIS</div>
+                <h2>Kapela Tuan Ma</h2>
+                <p>Kapela Tuan Ma merupakan jantung spiritualitas masyarakat Larantuka. Di sinilah disemayamkan patung Tuan Ma (Bunda Maria) yang menjadi pusat perhatian utama dalam tradisi sakral Semana Santa.</p>
+                <ul>
+                    <li><strong>Sejarah:</strong> Patung ditemukan secara mistermystic di pesisir pantai pada abad ke-16 (sekitar 1510) sebelum kedatangan bangsa Portugis.</li>
+                    <li><strong>Tradisi:</strong> Menjadi titik awal ritual sakral upacara Buka Pintu pada Pekan Suci.</li>
+                </ul>
+            </div>
+
+            <!-- Point 3 -->
+            <div class="step" id="step-2">
+                <div class="step-number">03 / LOKASI HISTORIS</div>
+                <h2>Tori Tuan Trewa</h2>
+                <p>Sebuah kapela kecil (tori) bersejarah yang memegang peranan khusus dalam refleksi penderitaan dan kerendahan hati saat Pekan Suci.</p>
+                <ul>
+                    <li><strong>Makna:</strong> Menggambarkan sosok Yesus yang terikat dan terbelenggu (Tuan Trewa).</li>
+                    <li><strong>Sistem Suku:</strong> Dikelola oleh keluarga/suku (confreria) yang menjaga tradisi turun-temurun sejak era Kerajaan Larantuka.</li>
+                </ul>
+            </div>
+
+            <!-- Point 4 -->
+            <div class="step" id="step-3">
+                <div class="step-number">04 / LOKASI HISTORIS</div>
+                <h2>Kapela St. Yosef</h2>
+                <p>Berdiri sebagai bentuk penghormatan kepada Santo Yosef, pelindung keluarga dan para pekerja, sekaligus perhentian penting dalam jalur prosesi keagamaan.</p>
+                <ul>
+                    <li><strong>Peran Ziarah:</strong> Menjadi salah satu perhentian (arma) utama prosesi Jumat Agung.</li>
+                    <li><strong>Lanskap Budaya:</strong> Menghubungkan tatanan sosial adat (koten/kiri) dengan struktur keagamaan lokal.</li>
+                </ul>
+            </div>
+
+            <footer>
+                <p>&copy; 2026 KKN-PPM UGM Romantika Larantuka</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // Data Koordinat & Detail Lokasi
+        // Catatan: Koordinat di bawah disesuaikan dengan area Larantuka
+        const locations = [
+            {
+                name: "Taman Doa Bukit Fatima",
+                coords: [-8.3375, 122.9812],
+                zoom: 17
+            },
+            {
+                name: "Kapela Tuan Ma",
+                coords: [-8.3418, 122.9885],
+                zoom: 18
+            },
+            {
+                name: "Tori Tuan Trewa",
+                coords: [-8.3425, 122.9868],
+                zoom: 18
+            },
+            {
+                name: "Kapela St. Yosef",
+                coords: [-8.3440, 122.9845],
+                zoom: 18
+            }
+        ];
+
+        // Inisialisasi Peta
+        const map = L.map('map', {
+            zoomControl: false
+        }).setView(locations[0].coords, locations[0].zoom);
+
+        // Tambahkan Basemap Esri World Imagery (Satelit)
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }).addTo(map);
+
+        // Atur posisi Zoom Control di kanan bawah
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        // Buat Marker untuk setiap lokasi
+        const markers = [];
+        locations.forEach((loc, index) => {
+            const marker = L.marker(loc.coords)
+                .addTo(map)
+                .bindPopup(`<b>${loc.name}</b>`);
+            markers.push(marker);
+        });
+
+        // Fitur Scroll-Driven Interactions (Intersection Observer)
+        const steps = document.querySelectorAll('.step');
+        
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.6 // Memicu pan saat 60% kartu terlihat di layar
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Ambil index dari ID step
+                    const stepIndex = parseInt(entry.target.id.split('-')[1]);
+
+                    // Update tampilan kartu aktif
+                    steps.forEach(step => step.classList.remove('active'));
+                    entry.target.classList.add('active');
+
+                    // Pan & Zoom Peta secara halus ke lokasi
+                    map.flyTo(locations[stepIndex].coords, locations[stepIndex].zoom, {
+                        duration: 1.8,
+                        easeLinearity: 0.25
+                    });
+
+                    // Buka popup marker
+                    markers[stepIndex].openPopup();
+                }
+            });
+        }, observerOptions);
+
+        steps.forEach(step => observer.observe(step));
+    </script>
+</body>
+</html>
